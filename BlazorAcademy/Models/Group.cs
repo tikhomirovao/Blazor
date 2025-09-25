@@ -7,6 +7,7 @@ namespace BlazorAcademy.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+
         public int group_id { get; set; }
         [Required]
         public string group_name { get; set; }
