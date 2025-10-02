@@ -1,0 +1,85 @@
+﻿@page "/theachers/create"
+@using Microsoft.EntityFrameworkCore
+@using BlazorAcademy.Models
+@inject IDbContextFactory<BlazorAcademy.Data.BlazorAcademyContext> DbFactory
+@inject NavigationManager NavigationManager
+@rendermode InteractiveServer
+
+<PageTitle>Create</PageTitle>
+
+<h1>Create</h1>
+
+<h2>Theacher</h2>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <EditForm method="post" Model="Theacher" OnValidSubmit="AddTheacher" FormName="create" Enhance>
+            <DataAnnotationsValidator />
+            <ValidationSummary class="text-danger" role="alert"/>
+            <div class="mb-3">
+                <label for="work_since" class="form-label">work_since:</label> 
+                <InputDate id="work_since" @bind-Value="Theacher.work_since" class="form-control" aria-required="true"/> 
+                <ValidationMessage For="() => Theacher.work_since" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="rate" class="form-label">rate:</label> 
+                <InputNumber id="rate" @bind-Value="Theacher.rate" class="form-control" aria-required="true"/> 
+                <ValidationMessage For="() => Theacher.rate" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="last_name" class="form-label">last_name:</label> 
+                <InputText id="last_name" @bind-Value="Theacher.last_name" class="form-control" aria-required="true"/> 
+                <ValidationMessage For="() => Theacher.last_name" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="first_name" class="form-label">first_name:</label> 
+                <InputText id="first_name" @bind-Value="Theacher.first_name" class="form-control" aria-required="true"/> 
+                <ValidationMessage For="() => Theacher.first_name" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="midle_name" class="form-label">midle_name:</label> 
+                <InputText id="midle_name" @bind-Value="Theacher.middle_name" class="form-control" aria-required="true"/> 
+                <ValidationMessage For="() => Theacher.middle_name" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="birth_date" class="form-label">birth_date:</label> 
+                <InputDate id="birth_date" @bind-Value="Theacher.birth_date" class="form-control" aria-required="true"/> 
+                <ValidationMessage For="() => Theacher.birth_date" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="email" class="form-label">email:</label> 
+                <InputText id="email" @bind-Value="Theacher.email" class="form-control" /> 
+                <ValidationMessage For="() => Theacher.email" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="phone" class="form-label">phone:</label> 
+                <InputText id="phone" @bind-Value="Theacher.phone" class="form-control" /> 
+                <ValidationMessage For="() => Theacher.phone" class="text-danger" /> 
+            </div>        
+            @* <div class="mb-3">
+                <label for="photo" class="form-label">photo:</label> 
+                <InputText id="photo" @bind-Value="Theacher.photo" class="form-control" /> 
+                <ValidationMessage For="() => Theacher.photo" class="text-danger" /> 
+            </div>   *@      
+            <button type="submit" class="btn btn-primary">Create</button>
+        </EditForm>
+    </div>
+</div>
+
+<div>
+    <a href="/theachers">Back to List</a>
+</div>
+
+@code {
+    [SupplyParameterFromForm]
+    private Teacher Theacher { get; set; } = new();
+
+    // To protect from overposting attacks, see https://learn.microsoft.com/aspnet/core/blazor/forms/#mitigate-overposting-attacks.
+    private async Task AddTheacher()
+    {
+        using var context = DbFactory.CreateDbContext();
+        context.Teachers.Add(Theacher);
+        await context.SaveChangesAsync();
+        NavigationManager.NavigateTo("/theachers");
+    }
+}

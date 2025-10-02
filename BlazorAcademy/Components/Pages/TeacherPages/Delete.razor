@@ -1,0 +1,87 @@
+﻿@page "/theachers/delete"
+@using Microsoft.EntityFrameworkCore
+@using BlazorAcademy.Models
+@inject IDbContextFactory<BlazorAcademy.Data.BlazorAcademyContext> DbFactory
+@inject NavigationManager NavigationManager
+
+<PageTitle>Delete</PageTitle>
+
+<h1>Delete</h1>
+
+<p>Are you sure you want to delete this?</p>
+<div>
+    <h2>Theacher</h2>
+    <hr />
+    @if (theacher is null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else {
+        <dl class="row">
+            <dt class="col-sm-2">work_since</dt>
+            <dd class="col-sm-10">@theacher.work_since</dd>
+        </dl>
+        <dl class="row">
+            <dt class="col-sm-2">rate</dt>
+            <dd class="col-sm-10">@theacher.rate</dd>
+        </dl>
+        <dl class="row">
+            <dt class="col-sm-2">last_name</dt>
+            <dd class="col-sm-10">@theacher.last_name</dd>
+        </dl>
+        <dl class="row">
+            <dt class="col-sm-2">first_name</dt>
+            <dd class="col-sm-10">@theacher.first_name</dd>
+        </dl>
+        <dl class="row">
+            <dt class="col-sm-2">midle_name</dt>
+            <dd class="col-sm-10">@theacher.middle_name</dd>
+        </dl>
+        <dl class="row">
+            <dt class="col-sm-2">birth_date</dt>
+            <dd class="col-sm-10">@theacher.birth_date</dd>
+        </dl>
+        <dl class="row">
+            <dt class="col-sm-2">email</dt>
+            <dd class="col-sm-10">@theacher.email</dd>
+        </dl>
+        <dl class="row">
+            <dt class="col-sm-2">phone</dt>
+            <dd class="col-sm-10">@theacher.phone</dd>
+        </dl>
+        <dl class="row">
+            <dt class="col-sm-2">photo</dt>
+            <dd class="col-sm-10">@theacher.photo</dd>
+        </dl>
+        <EditForm method="post" Model="theacher" OnValidSubmit="DeleteTheacher" FormName="delete" Enhance>
+            <button type="submit" class="btn btn-danger" disabled="@(theacher is null)">Delete</button> |
+            <a href="/theachers">Back to List</a>
+        </EditForm>
+    }
+</div>
+
+@code {
+    private Teacher? theacher;
+
+    [SupplyParameterFromQuery]
+    private int teacher_id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        using var context = DbFactory.CreateDbContext();
+        theacher = await context.Teachers.FirstOrDefaultAsync(m => m.teacher_id == teacher_id);
+
+        if (theacher is null)
+        {
+            NavigationManager.NavigateTo("notfound");
+        }
+    }
+
+    private async Task DeleteTheacher()
+    {
+        using var context = DbFactory.CreateDbContext();
+        context.Teachers.Remove(theacher!);
+        await context.SaveChangesAsync();
+        NavigationManager.NavigateTo("/theachers");
+    }
+}

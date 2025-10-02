@@ -1,0 +1,45 @@
+﻿@page "/teachers"
+@using Microsoft.EntityFrameworkCore
+@using Microsoft.AspNetCore.Components.QuickGrid
+@using BlazorAcademy.Models
+@using BlazorAcademy.Data
+@implements IAsyncDisposable
+@inject IDbContextFactory<BlazorAcademy.Data.BlazorAcademyContext> DbFactory
+@rendermode InteractiveServer
+
+<PageTitle>Index</PageTitle>
+
+<h1>Index</h1>
+
+<p>
+    <a href="theachers/create">Create New</a>
+</p>
+
+<QuickGrid Class="table" Items="context.Teachers">
+    <PropertyColumn Sortable="true" Title="Фамилия" Property="theacher => theacher.last_name" />
+    <PropertyColumn Sortable="true" Title="Имя" Property="theacher => theacher.first_name" />
+    <PropertyColumn Sortable="true" Title="Отчество" Property="theacher => theacher.middle_name" />
+    <PropertyColumn Sortable="true" Title="Дата рождения" Property="theacher => theacher.birth_date" />
+    <PropertyColumn Sortable="true" Title="E-mail" Property="theacher => theacher.email" />
+    <PropertyColumn Sortable="true" Title="Телефон" Property="theacher => theacher.phone" />
+    <PropertyColumn Sortable="true" Title="Работает с" Property="theacher => theacher.work_since" />
+    <PropertyColumn Sortable="true" Title="Ставка за пару" Property="theacher => theacher.rate" />
+    @* <PropertyColumn Property="theacher => theacher.photo" /> *@
+
+    <TemplateColumn Context="theacher">
+        <a href="@($"theachers/edit?teacher_id={theacher.teacher_id}")">Edit</a> |
+        <a href="@($"theachers/details?teacher_id={theacher.teacher_id}")">Details</a> |
+        <a href="@($"theachers/delete?teacher_id={theacher.teacher_id}")">Delete</a>
+    </TemplateColumn>
+</QuickGrid>
+
+@code {
+    private BlazorAcademyContext context = default!;
+
+    protected override void OnInitialized()
+    {
+        context = DbFactory.CreateDbContext();
+    }
+
+    public async ValueTask DisposeAsync() => await context.DisposeAsync();
+}
