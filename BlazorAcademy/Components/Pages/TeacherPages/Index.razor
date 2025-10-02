@@ -16,11 +16,13 @@
 </p>
 
 <QuickGrid Class="table" Items="context.Teachers">
-    <PropertyColumn Sortable="true" Title="Фамилия" Property="theacher => theacher.last_name" />
+    @* <PropertyColumn Sortable="true" Title="Фамилия" Property="theacher => theacher.last_name" />
     <PropertyColumn Sortable="true" Title="Имя" Property="theacher => theacher.first_name" />
-    <PropertyColumn Sortable="true" Title="Отчество" Property="theacher => theacher.middle_name" />
-    <PropertyColumn Sortable="true" Title="Дата рождения" Property="theacher => theacher.birth_date" />
-    <PropertyColumn Sortable="true" Title="E-mail" Property="theacher => theacher.email" />
+    <PropertyColumn Sortable="true" Title="Отчество" Property="theacher => theacher.middle_name" /> *@
+    <PropertyColumn Sortable="true" Title="Преподаватель" Property="teacher => teacher.FullName"/>
+    <PropertyColumn Sortable="true" Title="Дата рождения" Property="theacher => theacher.birth_date" Format="dd.MMM.yyyy"/>
+    <PropertyColumn Sortable="true" Title="Возраст" Property="theacher => theacher.Age" />
+    <PropertyColumn Sortable="true" Property="theacher => theacher.email" />
     <PropertyColumn Sortable="true" Title="Телефон" Property="theacher => theacher.phone" />
     <PropertyColumn Sortable="true" Title="Работает с" Property="theacher => theacher.work_since" />
     <PropertyColumn Sortable="true" Title="Ставка за пару" Property="theacher => theacher.rate" />
